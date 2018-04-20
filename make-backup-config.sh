@@ -11,11 +11,7 @@ typeset -A FILES
 FILES=(
     [0]="file.txt"
     [1]="file.sqlite"
-)
-
-typeset -A FOLDERS
-FOLDERS=(
-    [0]="/path/to/some/folder"
+    [2]="/path/to/some/directory"
 )
 
 typeset -A POSTGRESDB
