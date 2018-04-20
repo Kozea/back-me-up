@@ -14,6 +14,8 @@
     echo -e "\\033[0;31mUnable to load shared.sh\\033[0m" && exit 1 
 }
 
+echo -e "${GREEN}make-backup starts !${NC}"
+
 # Parse command line
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -40,10 +42,10 @@ done
 set -- "${POSITIONAL[@]}"
 
 # Exit if there is a missing parameter in the command line
-if [ ! "$CONFIGFILE" ]
+if [ -z "$CONFIGFILE" ]
 then
     echo -e "${RED}There is no configfile specified${NC}" && exit 1
-elif [ ! "$BORGREPO" ]
+elif [ -z "$BORGREPO" ]
 then
     echo -e "${RED}There is no borg repo specified${NC}" && exit 1
 fi
@@ -69,5 +71,36 @@ fi
 } || {
     echo -e "${RED}Something happens while loading ${CONFIGFILE}" && exit 1
 }
+
+# Create archives
+# Files
+if [ -z "${FILES}" ]
+then
+    echo -e "${YELLOW}No files to back-up${NC}"
+else
+    echo -e "* ${BLUE}Start archiving files${NC}"
+fi
+
+for file in "${FILES[@]}"
+do
+    archive_name=${file}
+    if [ "${archive_name:0:1}" = "/" ]
+    then
+        archive_name=$(echo "${archive_name}" | cut -c2-)
+    fi
+    archive_name=$(date +%Y-%m-%d)"-"${archive_name//\//-}
+    echo -e "${BLUE}Create back-up ${archive_name}${NC}"
+    {
+        ${BORG} create "${BORGREPO}"::"${archive_name}" "${file}"
+    } || {
+        if [ $? -eq 2 ]
+        then
+            echo -e "${YELLOW}Archive already exists${NC}"
+        else
+            echo -e "${RED}Unable to create the back-up${NC}" && exit 1
+        fi
+    }
+done
+
 
 echo -e "${GREEN}Back-up succeed !${NC}"
