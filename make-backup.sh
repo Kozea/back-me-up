@@ -74,7 +74,7 @@ fi
 
 # Create archives
 # Files
-if [ -z "${FILES}" ]
+if [[ ! -v FILES[@] ]]
 then
     echo -e "${YELLOW}No files to back-up${NC}"
 else
@@ -102,5 +102,39 @@ do
     }
 done
 
+echo -e "${GREEN}Back-up for files succeed !${NC}"
 
-echo -e "${GREEN}Back-up succeed !${NC}"
+#Postgres databases
+if [[ ! -v POSTGRESDB[@] ]]
+then
+    echo -e "${YELLOW}No postgresdb to back-up${NC}"
+else
+    echo -e "* ${BLUE}Start archiving postgresdb${NC}"
+fi
+
+for file_name in "${!POSTGRESDB[@]}"
+do
+    archive_name=${file_name##*/}
+    archive_name=$(date +%Y-%m-%d)"-"${archive_name//\//-}
+
+    echo -e "${BLUE}pg_dump ${POSTGRESDB[$file_name]}${NC}"
+    {
+        ${PG_DUMP} "${POSTGRESDB[$file_name]}" > "$file_name"
+    } || {
+        echo -e "${RED}Unable to execute the pg_dump command${NC}"
+        echo -e "${RED}Unable to create the back-up${NC}" && exit 1
+    }
+    echo -e "${BLUE}Create back-up ${archive_name}${NC}"
+    {
+        ${BORG} create "${BORGREPO}"::"${archive_name}" "${file_name}"
+    } || {
+        if [ $? -eq 2 ]
+        then
+            echo -e "${YELLOW}Archive already exists${NC}"
+        else
+            echo -e "${RED}Unable to create the back-up${NC}" && exit 1
+        fi
+    }
+done
+
+echo -e "${GREEN}Back-up for postgresdb succeed !${NC}"
