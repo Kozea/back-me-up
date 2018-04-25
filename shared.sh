@@ -17,3 +17,4 @@ YELLOW='\033[1;33m'
 # Define commands
 BORG="/usr/bin/borg"
 MKDIR="/usr/bin/mkdir"
+PG_DUMP="/usr/bin/pg_dump"
