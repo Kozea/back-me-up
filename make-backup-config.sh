@@ -16,5 +16,6 @@ FILES=(
 
 typeset -A POSTGRESDB
 POSTGRESDB=(
-    [0]="database_name"
+    [save_file.sql]="--schema-only -Fc database_name"
+    [other_save_file.sql]="--data-only --exclude-schema=data -Fc database_name"
 )
