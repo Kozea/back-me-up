@@ -69,7 +69,7 @@ fi
     echo -e "* ${BLUE}Load ${CONFIGFILE}${NC}"
     source "${CONFIGFILE}"
 } || {
-    echo -e "${RED}Something happens while loading ${CONFIGFILE}" && exit 1
+    echo -e "${RED}Something happens while loading ${CONFIGFILE}${NC}" && exit 1
 }
 
 # Create archives
@@ -116,6 +116,18 @@ for file_name in "${!POSTGRESDB[@]}"
 do
     archive_name=${file_name##*/}
     archive_name=$(date +%Y-%m-%d)"-"${archive_name//\//-}
+
+    archive_path=${file_name%/*}
+    if [ ! -d "${archive_path}" ]
+    then
+        {
+            echo -e "* ${BLUE}Create ${archive_path}${NC}"
+            ${MKDIR} -p "${archive_path}"
+        } || {
+            echo -e "${RED}Unable to create ${archive_path}${NC}" && exit 1
+        }
+    fi
+
 
     echo -e "${BLUE}pg_dump ${POSTGRESDB[$file_name]}${NC}"
     {
