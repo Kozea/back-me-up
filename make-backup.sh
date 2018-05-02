@@ -150,3 +150,11 @@ do
 done
 
 echo -e "${GREEN}Back-up for postgresdb succeed !${NC}"
+
+echo -e "* ${BLUE}Cleaning back-ups${NC}"
+{
+    ${BORG} prune --keep-daily 5 --keep-weekly 4 --keep-monthly 3 "${BORGREPO}"
+} || {
+    echo -e "${RED}Unable to clean the back-ups${NC}" && exit 1
+}
+
