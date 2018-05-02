@@ -7,6 +7,8 @@
 # NOTES : 
 #==============================================================================
 
+PRUNE_OPT="--keep-secondly=-1 --keep-minutely=-1 --keep-hourly=-1 --keep-daily=5"
+
 typeset -A FILES
 FILES=(
     [0]="file.txt"
