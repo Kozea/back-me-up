@@ -100,6 +100,7 @@ do
             echo -e "${RED}Unable to create the back-up${NC}" && exit 1
         fi
     }
+    sleep 1
 done
 
 echo -e "${GREEN}Back-up for files succeed !${NC}"
@@ -147,6 +148,7 @@ do
             echo -e "${RED}Unable to create the back-up${NC}" && exit 1
         fi
     }
+    sleep 1
 done
 
 echo -e "${GREEN}Back-up for postgresdb succeed !${NC}"
@@ -157,4 +159,3 @@ echo -e "* ${BLUE}Cleaning back-ups${NC}"
 } || {
     echo -e "${RED}Unable to clean the back-ups${NC}" && exit 1
 }
-
