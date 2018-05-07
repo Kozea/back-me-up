@@ -18,3 +18,4 @@ YELLOW='\033[1;33m'
 BORG="/usr/bin/borg"
 MKDIR="/usr/bin/mkdir"
 PG_DUMP="/usr/bin/pg_dump"
+RCLONE="/usr/bin/rclone"
