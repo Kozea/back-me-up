@@ -2,7 +2,7 @@
 
 #==============================================================================
 # FILE : sync-backup.sh
-# USAGE : 
+# USAGE : ./sync-backup.sh -c configfile
 # DESCRIPTION : Sync local back-up with a remote server
 # NOTES : 
 #==============================================================================
@@ -16,6 +16,39 @@
 
 echo -e "${GREEN}sync-backup starts !${NC}"
 
+# Parse command line
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+
+    case $key in
+        -c)
+            CONFIGFILE="$2"
+            shift
+            shift
+            ;;
+        *)
+        POSITIONAL+=("$1")
+        shift
+        ;;
+    esac
+done
+set -- "${POSITIONAL[@]}"
+
+# Exit if there is a missing parameter in the command line
+if [ -z "$CONFIGFILE" ]
+then
+    echo -e "${RED}There is no configfile specified${NC}" && exit 1
+fi
+
+# Load configfile
+{
+    echo -e "* ${BLUE}Load ${CONFIGFILE}${NC}"
+    source "${CONFIGFILE}"
+} || {
+    echo -e "${RED}Something happens while loading ${CONFIGFILE}${NC}" && exit 1
+}
 
 # Sync file with remote server
 if [[ ! -v RCLONE_REPOS[@] ]]
@@ -24,7 +57,6 @@ then
 else
     echo -e "* ${BLUE}Start synchronizing files${NC}"
 fi
-
 
 for rclone_conf in "${RCLONE_REPOS[@]}"
 do
