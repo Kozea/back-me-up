@@ -132,7 +132,7 @@ do
 
     echo -e "${BLUE}pg_dump ${POSTGRESDB[$file_name]}${NC}"
     {
-        ${PG_DUMP} "${POSTGRESDB[$file_name]}" > "$file_name"
+        ${PG_DUMP} ${POSTGRESDB[${file_name}]} > "$file_name"
     } || {
         echo -e "${RED}Unable to execute the pg_dump command${NC}"
         echo -e "${RED}Unable to create the back-up${NC}" && exit 1
