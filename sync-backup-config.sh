@@ -3,7 +3,7 @@
 #==============================================================================
 # FILE : sync-backup-config.sh
 # USAGE : source sync-backup-config.sh
-# DESCRIPTION : Configfile example for sync-back-up.sh
+# DESCRIPTION : Configfile example for sync-backup.sh
 # NOTES : 
 #==============================================================================
 
