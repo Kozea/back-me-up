@@ -60,13 +60,13 @@ fi
 
 for rclone_conf in "${RCLONE_REPOS[@]}"
 do
-    remote_name=$(echo "$rclone_conf" | awk '{print $1}')
+    remote_name=$(echo "$rclone_conf" | ${AWK} '{print $1}')
     if [ "$(${RCLONE} listremotes | grep -c "$remote_name")" -lt 1 ]
     then
         echo -e "${YELLOW}The remote ${remote_name} doesn't exist${NC}"
         echo -e "* ${BLUE}Initializing the remote${NC}"
         {
-            password=$(echo "$rclone_conf" | awk '{print $NF}')
+            password=$(echo "$rclone_conf" | ${AWK} '{print $NF}')
             password_obscure=$(${RCLONE} obscure "${password}")
             rclone_conf=$(sed "s/${password}/${password_obscure}/" <<< "${rclone_conf}")
             ${RCLONE} config create ${rclone_conf}
