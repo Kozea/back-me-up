@@ -66,7 +66,10 @@ do
         echo -e "${YELLOW}The remote ${remote_name} doesn't exist${NC}"
         echo -e "* ${BLUE}Initializing the remote${NC}"
         {
-            ${RCLONE} config create "$rclone_conf"
+            password=$(echo "$rclone_conf" | awk '{print $NF}')
+            password_obscure=$(${RCLONE} obscure "${password}")
+            rclone_conf=$(sed "s/${password}/${password_obscure}/" <<< "${rclone_conf}")
+            ${RCLONE} config create ${rclone_conf}
         } || {
             echo -e "${RED}Failed to create the remote ${remote_name}${NC}" && exit 1
         }
@@ -75,9 +78,9 @@ do
     do
         {
             echo -e "${BLUE}Sync ${sync_instruction}${NC}"
-            ${RCLONE} sync "${sync_instruction}"
+            ${RCLONE} sync ${sync_instruction}
         } || {
-            echo -e "${YELLOW}Failed to sync ${sync_instruction}${NC}"
+            echo -e "${RED}Failed to sync ${sync_instruction}${NC}" && exit 1
         }
     done
 done
