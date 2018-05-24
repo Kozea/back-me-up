@@ -105,7 +105,7 @@ done
 
 echo -e "${GREEN}Back-up for files succeed !${NC}"
 
-#Postgres databases
+# Postgres databases
 if [[ ! -v POSTGRESDB[@] ]]
 then
     echo -e "${YELLOW}No postgresdb to back-up${NC}"
@@ -115,8 +115,9 @@ fi
 
 for file_name in "${!POSTGRESDB[@]}"
 do
+    today_date=$(date +%Y-%m-%d)
     archive_name=${file_name##*/}
-    archive_name=$(date +%Y-%m-%d)"-"${archive_name//\//-}
+    archive_name="${today_date}-"${archive_name//\//-}
 
     archive_path=${file_name%/*}
     if [ ! -d "${archive_path}" ]
@@ -131,12 +132,17 @@ do
 
 
     echo -e "${BLUE}pg_dump ${POSTGRESDB[$file_name]}${NC}"
-    {
-        ${PG_DUMP} ${POSTGRESDB[${file_name}]} > "$file_name"
-    } || {
-        echo -e "${RED}Unable to execute the pg_dump command${NC}"
-        echo -e "${RED}Unable to create the back-up${NC}" && exit 1
-    }
+    if [ ! "$(date +%Y-%m-%d -r ${file_name})" = "${today_date}" ] 
+    then
+        {
+            ${PG_DUMP} ${POSTGRESDB[${file_name}]} > "$file_name"
+        } || {
+            echo -e "${RED}Unable to execute the pg_dump command${NC}"
+            echo -e "${RED}Unable to create the back-up${NC}" && exit 1
+        }
+    else
+        echo -e "${YELLOW}Dump for today already exists${NC}"
+    fi
     echo -e "${BLUE}Create back-up ${archive_name}${NC}"
     {
         ${BORG} create "${BORGREPO}"::"${archive_name}" "${file_name}"
