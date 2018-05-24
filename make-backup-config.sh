@@ -9,6 +9,12 @@
 
 PRUNE_OPT="--keep-secondly=-1 --keep-minutely=-1 --keep-hourly=-1 --keep-daily=5"
 
+typeset -A BEFORE_BACKUP
+BEFORE_BACKUP=(
+    [0]="some command to execute before starting backup"
+    [1]="other command"
+)
+
 typeset -A FILES
 FILES=(
     [0]="file.txt"

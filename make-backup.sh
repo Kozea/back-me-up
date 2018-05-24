@@ -72,6 +72,19 @@ fi
     echo -e "${RED}Something happens while loading ${CONFIGFILE}${NC}" && exit 1
 }
 
+# Execute before back-up commands
+if [[ -v BEFORE_BACKUP[@] ]]
+then
+    for before in "${BEFORE_BACKUP[@]}"
+    do
+        {
+            "${before}"
+        } || {
+            echo -e "${YELLOW}Failed to execute ${before}${NC}"
+        }
+    done
+fi
+
 # Create archives
 # Files
 if [[ ! -v FILES[@] ]]
