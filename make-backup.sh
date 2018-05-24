@@ -86,9 +86,9 @@ do
     archive_name=${file}
     if [ "${archive_name:0:1}" = "/" ]
     then
-        archive_name=$(echo "${archive_name}" | cut -c2-)
+        archive_name=$(echo "${archive_name}" | ${CUT} -c2-)
     fi
-    archive_name=$(date +%Y-%m-%d)"-"${archive_name//\//-}
+    archive_name=$(${DATE} +%Y-%m-%d)"-"${archive_name//\//-}
     echo -e "${BLUE}Create back-up ${archive_name}${NC}"
     {
         ${BORG} create "${BORGREPO}"::"${archive_name}" "${file}"
@@ -115,7 +115,7 @@ fi
 
 for file_name in "${!POSTGRESDB[@]}"
 do
-    today_date=$(date +%Y-%m-%d)
+    today_date=$(${DATE} +%Y-%m-%d)
     archive_name=${file_name##*/}
     archive_name="${today_date}-"${archive_name//\//-}
 
@@ -132,7 +132,7 @@ do
 
 
     echo -e "${BLUE}pg_dump ${POSTGRESDB[$file_name]}${NC}"
-    if [ ! "$(date +%Y-%m-%d -r ${file_name})" = "${today_date}" ] 
+    if [ ! "$(${DATE} +%Y-%m-%d -r ${file_name})" = "${today_date}" ]
     then
         {
             ${PG_DUMP} ${POSTGRESDB[${file_name}]} > "$file_name"
