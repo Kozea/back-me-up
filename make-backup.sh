@@ -58,7 +58,12 @@ then
         echo -e "* ${BLUE}Create ${BORGREPO}${NC}"
         ${MKDIR} -p "${BORGREPO}"
         echo -e "* ${BLUE}Init ${BORGREPO}${NC}"
-        ${BORG} init --critical --encryption=none "${BORGREPO}"
+        if [ "${BORG_PASSPHRASE}" != "" ]
+        then
+            ${BORG} init --critical --encryption=repokey "${BORGREPO}"
+        else
+            ${BORG} init --critical --encryption=none "${BORGREPO}"
+        fi
     } || {
         echo -e "${RED}Unable to create and init ${BORGREPO}${NC}" && exit 1
     }
