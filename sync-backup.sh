@@ -50,39 +50,54 @@ fi
     echo -e "${RED}Something happens while loading ${CONFIGFILE}${NC}" && exit 1
 }
 
-# Sync file with remote server
+# Sync files with remote server with rclone
 if [[ ! -v RCLONE_REPOS[@] ]]
 then
     echo -e "${YELLOW}No rclone repos defined${NC}"
 else
     echo -e "* ${BLUE}Start synchronizing files${NC}"
+    for rclone_conf in "${RCLONE_REPOS[@]}"
+    do
+        remote_name=$(echo "$rclone_conf" | ${AWK} '{print $1}')
+        if [ "$(${RCLONE} listremotes | grep -c "$remote_name")" -lt 1 ]
+        then
+            echo -e "${YELLOW}The remote ${remote_name} doesn't exist${NC}"
+            echo -e "* ${BLUE}Initializing the remote${NC}"
+            {
+                password=$(echo "$rclone_conf" | ${AWK} '{print $NF}')
+                password_obscure=$(${RCLONE} obscure "${password}")
+                rclone_conf=$(sed "s/${password}/${password_obscure}/" <<< "${rclone_conf}")
+                ${RCLONE} config create ${rclone_conf}
+            } || {
+                echo -e "${RED}Failed to create the remote ${remote_name}${NC}" && exit 1
+            }
+        fi
+        for sync_instruction in "${RCLONE_SYNC[@]}"
+        do
+            {
+                echo -e "${BLUE}Sync ${sync_instruction}${NC}"
+                ${RCLONE} sync ${sync_instruction}
+            } || {
+                echo -e "${RED}Failed to sync ${sync_instruction}${NC}" && exit 1
+            }
+        done
+    done
 fi
 
-for rclone_conf in "${RCLONE_REPOS[@]}"
-do
-    remote_name=$(echo "$rclone_conf" | ${AWK} '{print $1}')
-    if [ "$(${RCLONE} listremotes | grep -c "$remote_name")" -lt 1 ]
-    then
-        echo -e "${YELLOW}The remote ${remote_name} doesn't exist${NC}"
-        echo -e "* ${BLUE}Initializing the remote${NC}"
-        {
-            password=$(echo "$rclone_conf" | ${AWK} '{print $NF}')
-            password_obscure=$(${RCLONE} obscure "${password}")
-            rclone_conf=$(sed "s/${password}/${password_obscure}/" <<< "${rclone_conf}")
-            ${RCLONE} config create ${rclone_conf}
-        } || {
-            echo -e "${RED}Failed to create the remote ${remote_name}${NC}" && exit 1
-        }
-    fi
-    for sync_instruction in "${RCLONE_SYNC[@]}"
+# Sync SCP
+if [[ ! -v SCP_SYNC[@] ]]
+then
+    echo -e "${YELLOW}No scp config found${NC}"
+else
+    for scp_conf in "${SCP_SYNC[@]}"
     do
         {
-            echo -e "${BLUE}Sync ${sync_instruction}${NC}"
-            ${RCLONE} sync ${sync_instruction}
+            echo -e "${BLUE}Sync ${scp_conf}${NC}"
+            ${scp_conf}
         } || {
-            echo -e "${RED}Failed to sync ${sync_instruction}${NC}" && exit 1
+            echo -e "${RED}Failed to sync ${scp_conf}${NC}" && exit 1
         }
     done
-done
+fi
 
 echo -e "${GREEN}Sync succeed !${NC}"

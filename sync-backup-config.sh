@@ -16,3 +16,8 @@ typeset -A RCLONE_SYNC
 RCLONE_SYNC=(
     [0]="local_path remote:/path"
 )
+
+typeset -A SCP_SYNC
+SCP_SYNC=(
+    [0]="${SCP} -P port -r local_path user@example.com:/remote_path"
+)
