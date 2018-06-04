@@ -183,3 +183,5 @@ echo -e "* ${BLUE}Cleaning back-ups${NC}"
 } || {
     echo -e "${RED}Unable to clean the back-ups${NC}" && exit 1
 }
+
+echo -e "${GREEN}make-backup ended !${NC}"
