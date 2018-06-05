@@ -2,7 +2,7 @@
 
 #==============================================================================
 # FILE : make-backup.sh
-# USAGE : make-backup.sh -c configfile -b path_to_borg_repo
+# USAGE : make-backup.sh -c configfile
 # DESCRIPTION : Make a back-up with Borg of the files listed in the configfile
 # NOTES : 
 #==============================================================================
@@ -28,11 +28,6 @@ do
             shift
             shift
             ;;
-        -b)
-            BORGREPO="$2"
-            shift
-            shift
-            ;;
         *)
         POSITIONAL+=("$1")
         shift
@@ -45,11 +40,20 @@ set -- "${POSITIONAL[@]}"
 if [ -z "$CONFIGFILE" ]
 then
     echo -e "${RED}There is no configfile specified${NC}" && exit 1
-elif [ -z "$BORGREPO" ]
+fi
+
+# Load configfile
+{
+    echo -e "* ${BLUE}Load ${CONFIGFILE}${NC}"
+    source "${CONFIGFILE}"
+} || {
+    echo -e "${RED}Something happens while loading ${CONFIGFILE}${NC}" && exit 1
+}
+
+if [ -z "$BORGREPO" ]
 then
     echo -e "${RED}There is no borg repo specified${NC}" && exit 1
 fi
-
 
 # Create and init borg repo if needed
 if [ ! -d "$BORGREPO" ]
@@ -68,14 +72,6 @@ then
         echo -e "${RED}Unable to create and init ${BORGREPO}${NC}" && exit 1
     }
 fi
-
-# Load configfile
-{
-    echo -e "* ${BLUE}Load ${CONFIGFILE}${NC}"
-    source "${CONFIGFILE}"
-} || {
-    echo -e "${RED}Something happens while loading ${CONFIGFILE}${NC}" && exit 1
-}
 
 # Execute before back-up commands
 if [[ -v BEFORE_BACKUP[@] ]]

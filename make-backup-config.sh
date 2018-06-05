@@ -9,6 +9,8 @@
 
 export BORG_PASSPHRASE="superpassphrase"
 
+BORGREPO="/path/to/borg/repo"
+
 PRUNE_OPT="--keep-secondly=-1 --keep-minutely=-1 --keep-hourly=-1 --keep-daily=5"
 
 typeset -A BEFORE_BACKUP
