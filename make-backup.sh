@@ -79,7 +79,7 @@ then
     for before in "${BEFORE_BACKUP[@]}"
     do
         {
-            "${before}"
+            ${before}
         } || {
             echo -e "${YELLOW}Failed to execute ${before}${NC}"
         }
@@ -186,7 +186,7 @@ then
     for after in "${AFTER_BACKUP[@]}"
     do
         {
-            "${after}"
+            ${after}
         } || {
             echo -e "${YELLOW}Failed to execute ${after}${NC}"
         }
