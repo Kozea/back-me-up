@@ -100,4 +100,17 @@ else
     done
 fi
 
+# Execute after sync commands
+if [[ -v AFTER_SYNC[@] ]]
+then
+    for after in "${AFTER_SYNC[@]}"
+    do
+        {
+            ${after}
+        } || {
+            echo -e "${YELLOW}Failed to execute ${after}${NC}"
+        }
+    done
+fi
+
 echo -e "${GREEN}Sync succeed !${NC}"

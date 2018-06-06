@@ -21,3 +21,8 @@ typeset -A SCP_SYNC
 SCP_SYNC=(
     [0]="${SCP} -P port -r local_path user@example.com:/remote_path"
 )
+
+typeset -A AFTER_SYNC
+AFTER_SYNC=(
+    [0]="some command you want to perform when sync is done"
+)
