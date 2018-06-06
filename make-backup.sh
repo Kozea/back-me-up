@@ -180,7 +180,7 @@ echo -e "* ${BLUE}Cleaning back-ups${NC}"
     echo -e "${RED}Unable to clean the back-ups${NC}" && exit 1
 }
 
-# Execute before back-up commands
+# Execute after back-up commands
 if [[ -v AFTER_BACKUP[@] ]]
 then
     for after in "${AFTER_BACKUP[@]}"
