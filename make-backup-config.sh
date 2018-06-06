@@ -19,6 +19,11 @@ BEFORE_BACKUP=(
     [1]="other command"
 )
 
+typeset -A AFTER_BACKUP
+AFTER_BACKUP=(
+    [0]="some command to execute when backups are made"
+)
+
 typeset -A FILES
 FILES=(
     [0]="file.txt"
