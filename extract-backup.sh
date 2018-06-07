@@ -72,10 +72,24 @@ TO_RESTORE="${TARGET_NAME}_POSTGRES_INSTRUCTIONS"[@]
 }
 
 {
-    cd ${!EXTRACT_PATH}
+    cd "${!EXTRACT_PATH}"
 } || {
     echo -e "${RED}${!EXTRACT_PATH} not found${NC}" && exit 1
 }
+
+# Execute before extractingcommands
+if [[ -v BEFORE_EXTRACT[@] ]]
+then
+    echo -e "${BLUE}Executing before commands${NC}"
+    for before in "${BEFORE_EXTRACT[@]}"
+    do
+        {
+            ${before}
+        } || {
+            echo -e "${YELLOW}Failed to execute ${before}${NC}"
+        }
+    done
+fi
 
 for extract in "${!TO_EXTRACT}"
 do

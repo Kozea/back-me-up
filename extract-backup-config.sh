@@ -7,6 +7,12 @@
 # NOTES : 
 #==============================================================================
 
+typeset -A BEFORE_EXTRACT
+BEFORE_EXTRACT=(
+    [0]="some command to execute before extracting backup"
+    [1]="other command"
+)
+
 NAME1_PASSPHRASE="superpassphrase"
 NAME2_PASSPHRASE="superpassphrase"
 NAME3_PASSPHRASE="superpassphrase"
