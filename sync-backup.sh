@@ -103,6 +103,7 @@ fi
 # Execute after sync commands
 if [[ -v AFTER_SYNC[@] ]]
 then
+    echo -e "${BLUE}Executing after commands${NC}"
     for after in "${AFTER_SYNC[@]}"
     do
         {

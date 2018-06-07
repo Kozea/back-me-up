@@ -76,6 +76,7 @@ fi
 # Execute before back-up commands
 if [[ -v BEFORE_BACKUP[@] ]]
 then
+    echo -e "${BLUE}Executing before commands${NC}"
     for before in "${BEFORE_BACKUP[@]}"
     do
         {
@@ -183,6 +184,7 @@ echo -e "* ${BLUE}Cleaning back-ups${NC}"
 # Execute after back-up commands
 if [[ -v AFTER_BACKUP[@] ]]
 then
+    echo -e "${BLUE}Executing after commands${NC}"
     for after in "${AFTER_BACKUP[@]}"
     do
         {
