@@ -111,4 +111,18 @@ do
     }
 done
 
+# Execute after extract commands
+if [[ -v AFTER_EXTRACT[@] ]]
+then
+    echo -e "${BLUE}Executing after commands${NC}"
+    for after in "${AFTER_EXTRACT[@]}"
+    do
+        {
+            ${after}
+        } || {
+            echo -e "${YELLOW}Failed to execute ${after}${NC}"
+        }
+    done
+fi
+
 echo -e "${GREEN}extract-backup ended !${NC}"

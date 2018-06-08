@@ -13,6 +13,11 @@ BEFORE_EXTRACT=(
     [1]="other command"
 )
 
+typeset -A AFTER_EXTRACT
+AFTER_EXTRACT=(
+    [0]="some command you want to perform when extract is done"
+)
+
 NAME1_PASSPHRASE="superpassphrase"
 NAME2_PASSPHRASE="superpassphrase"
 NAME3_PASSPHRASE="superpassphrase"
