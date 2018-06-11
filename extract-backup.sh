@@ -77,18 +77,15 @@ TO_RESTORE="${TARGET_NAME}_POSTGRES_INSTRUCTIONS"[@]
     echo -e "${RED}${!EXTRACT_PATH} not found${NC}" && exit 1
 }
 
-# Execute before extractingcommands
-if [[ -v BEFORE_EXTRACT[@] ]]
+# Execute before extract commands
+if [ -n "$(type before_extract)" ]
 then
     echo -e "${BLUE}Executing before commands${NC}"
-    for before in "${BEFORE_EXTRACT[@]}"
-    do
-        {
-            ${before}
-        } || {
-            echo -e "${YELLOW}Failed to execute ${before}${NC}"
-        }
-    done
+    {
+        before_extract
+    } || {
+        echo -e "${YELLOW}Failed to execute \"function before_extract\"${NC}"
+    }
 fi
 
 for extract in "${!TO_EXTRACT}"
@@ -112,17 +109,14 @@ do
 done
 
 # Execute after extract commands
-if [[ -v AFTER_EXTRACT[@] ]]
+if [ -n "$(type after_extract)" ]
 then
     echo -e "${BLUE}Executing after commands${NC}"
-    for after in "${AFTER_EXTRACT[@]}"
-    do
-        {
-            ${after}
-        } || {
-            echo -e "${YELLOW}Failed to execute ${after}${NC}"
-        }
-    done
+    {
+        after_extract
+    } || {
+        echo -e "${YELLOW}Failed to execute \"function after_extract\"${NC}"
+    }
 fi
 
 echo -e "${GREEN}extract-backup ended !${NC}"

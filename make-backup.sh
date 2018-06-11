@@ -73,18 +73,15 @@ then
     }
 fi
 
-# Execute before back-up commands
-if [[ -v BEFORE_BACKUP[@] ]]
+# Execute before backup commands
+if [ -n "$(type before_backup)" ]
 then
     echo -e "${BLUE}Executing before commands${NC}"
-    for before in "${BEFORE_BACKUP[@]}"
-    do
-        {
-            ${before}
-        } || {
-            echo -e "${YELLOW}Failed to execute ${before}${NC}"
-        }
-    done
+    {
+        before_backup
+    } || {
+        echo -e "${YELLOW}Failed to execute \"function before_backup\"${NC}"
+    }
 fi
 
 # Create archives
@@ -181,18 +178,15 @@ echo -e "* ${BLUE}Cleaning back-ups${NC}"
     echo -e "${RED}Unable to clean the back-ups${NC}" && exit 1
 }
 
-# Execute after back-up commands
-if [[ -v AFTER_BACKUP[@] ]]
+# Execute after backup commands
+if [ -n "$(type after_backup)" ]
 then
     echo -e "${BLUE}Executing after commands${NC}"
-    for after in "${AFTER_BACKUP[@]}"
-    do
-        {
-            ${after}
-        } || {
-            echo -e "${YELLOW}Failed to execute ${after}${NC}"
-        }
-    done
+    {
+        after_backup
+    } || {
+        echo -e "${YELLOW}Failed to execute \"function after_backup\"${NC}"
+    }
 fi
 
 echo -e "${GREEN}make-backup ended !${NC}"

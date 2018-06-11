@@ -6,17 +6,15 @@
 # DESCRIPTION : Configfile example for extract-back-up.sh
 # NOTES : 
 #==============================================================================
+function before_extract {
+    # some stuff to perform before extract starts
+    echo "${BLUE}Before extract${NC}"
+}
 
-typeset -A BEFORE_EXTRACT
-BEFORE_EXTRACT=(
-    [0]="some command to execute before extracting backup"
-    [1]="other command"
-)
-
-typeset -A AFTER_EXTRACT
-AFTER_EXTRACT=(
-    [0]="some command you want to perform when extract is done"
-)
+function after_extract {
+    # some stuff to perform when extract is done
+    echo "${BLUE}After extract${NC}"
+}
 
 NAME1_PASSPHRASE="superpassphrase"
 NAME2_PASSPHRASE="superpassphrase"

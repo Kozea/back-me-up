@@ -22,7 +22,7 @@ SCP_SYNC=(
     [0]="${SCP} -P port -r local_path user@example.com:/remote_path"
 )
 
-typeset -A AFTER_SYNC
-AFTER_SYNC=(
-    [0]="some command you want to perform when sync is done"
-)
+function after_sync {
+    # some stuff to perform when sync is done
+    echo "${BLUE}After sync${NC}"
+}

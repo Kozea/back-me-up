@@ -101,17 +101,14 @@ else
 fi
 
 # Execute after sync commands
-if [[ -v AFTER_SYNC[@] ]]
+if [ -n "$(type after_sync)" ]
 then
     echo -e "${BLUE}Executing after commands${NC}"
-    for after in "${AFTER_SYNC[@]}"
-    do
-        {
-            ${after}
-        } || {
-            echo -e "${YELLOW}Failed to execute ${after}${NC}"
-        }
-    done
+    {
+        after_sync
+    } || {
+        echo -e "${YELLOW}Failed to execute \"function after_sync\"${NC}"
+    }
 fi
 
 echo -e "${GREEN}Sync succeed !${NC}"

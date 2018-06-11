@@ -13,16 +13,15 @@ BORGREPO="/path/to/borg/repo"
 
 PRUNE_OPT="--keep-secondly=-1 --keep-minutely=-1 --keep-hourly=-1 --keep-daily=5"
 
-typeset -A BEFORE_BACKUP
-BEFORE_BACKUP=(
-    [0]="some command to execute before starting backup"
-    [1]="other command"
-)
+function before_backup {
+    # some stuff to perform before backup starts
+    echo "${BLUE}Before backup${NC}"
+}
 
-typeset -A AFTER_BACKUP
-AFTER_BACKUP=(
-    [0]="some command to execute when backups are made"
-)
+function after_backup {
+    # some stuff to perform when backup are done
+    echo "${BLUE}After backup${NC}"
+}
 
 typeset -A FILES
 FILES=(
