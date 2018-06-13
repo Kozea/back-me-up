@@ -66,7 +66,7 @@ else
             {
                 password=$(echo "$rclone_conf" | ${AWK} '{print $NF}')
                 password_obscure=$(${RCLONE} obscure "${password}")
-                rclone_conf=$(sed "s/${password}/${password_obscure}/" <<< "${rclone_conf}")
+                rclone_conf=$(${SED} "s/${password}/${password_obscure}/" <<< "${rclone_conf}")
                 ${RCLONE} config create ${rclone_conf}
             } || {
                 echo -e "${RED}Failed to create the remote ${remote_name}${NC}" && exit 1
