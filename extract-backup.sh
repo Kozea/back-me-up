@@ -82,7 +82,7 @@ if [ -n "$(type before_extract)" ]
 then
     echo -e "${BLUE}Executing before commands${NC}"
     {
-        before_extract
+        before_extract ${!EXTRACT_PATH}
     } || {
         echo -e "${YELLOW}Failed to execute \"function before_extract\"${NC}"
     }
@@ -113,7 +113,7 @@ if [ -n "$(type after_extract)" ]
 then
     echo -e "${BLUE}Executing after commands${NC}"
     {
-        after_extract
+        after_extract ${!EXTRACT_PATH}
     } || {
         echo -e "${YELLOW}Failed to execute \"function after_extract\"${NC}"
     }
