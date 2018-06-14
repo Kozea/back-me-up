@@ -21,6 +21,11 @@ do
     key="$1"
 
     case $key in
+        -c)
+            CONFIGFILE="$2"
+            shift
+            shift
+            ;;
         -t)
             TARGET_PATH="$2"
             shift
@@ -35,10 +40,21 @@ done
 set -- "${POSITIONAL[@]}"
 
 # Exit if there is a missing parameter in the command line
-if [ -z "$TARGET_PATH" ]
+if [ -z "$CONFIGFILE" ]
+then
+    echo -e "${RED}There is no configfile specified${NC}" && exit 1
+elif [ -z "$TARGET_PATH" ]
 then
     echo -e "${RED}There is no target specified${NC}" && exit 1
 fi
+
+# Load configfile
+{
+    echo -e "* ${BLUE}Load ${CONFIGFILE}${NC}"
+    source "${CONFIGFILE}"
+} || {
+    echo -e "${RED}Something happens while loading ${CONFIGFILE}${NC}" && exit 1
+}
 
 TODAY_DATE=$(${DATE} +%Y-%m-%d)
 
