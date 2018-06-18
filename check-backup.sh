@@ -11,7 +11,7 @@
 {
     source "$(dirname "$0")/shared.sh" 
 } || {
-    echo -e "\\033[0;31mUnable to load shared.sh\\033[0m" && exit 1 
+    echo "Unable to load shared.sh" && exit 1 
 }
 
 # Parse command line
@@ -42,18 +42,18 @@ set -- "${POSITIONAL[@]}"
 # Exit if there is a missing parameter in the command line
 if [ -z "$CONFIGFILE" ]
 then
-    echo -e "${RED}There is no configfile specified${NC}" && exit 1
+    echo "There is no configfile specified" && exit 1
 elif [ -z "$TARGET_PATH" ]
 then
-    echo -e "${RED}There is no target specified${NC}" && exit 1
+    echo "There is no target specified" && exit 1
 fi
 
 # Load configfile
 {
-    echo -e "* ${BLUE}Load ${CONFIGFILE}${NC}"
+    echo "* Load ${CONFIGFILE}"
     source "${CONFIGFILE}"
 } || {
-    echo -e "${RED}Something happens while loading ${CONFIGFILE}${NC}" && exit 1
+    echo "Something happens while loading ${CONFIGFILE}" && exit 1
 }
 
 TODAY_DATE=$(${DATE} +%Y-%m-%d)
