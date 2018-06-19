@@ -84,20 +84,17 @@ else
     done
 fi
 
-# Sync RSYNC
-if [[ ! -v RSYNC_SYNC[@] ]]
+# Execute sync commands
+if [ -n "$(type sync)" ]
 then
-    echo -e "${YELLOW}No rsync config found${NC}"
+    echo -e "${BLUE}Executing sync commands${NC}"
+    {
+        sync
+    } || {
+        echo -e "${YELLOW}Failed to execute \"function sync\"${NC}"
+    }
 else
-    for rsync_conf in "${RSYNC_SYNC[@]}"
-    do
-        {
-            echo -e "${BLUE}Sync ${rsync_conf}${NC}"
-            ${rsync_conf}
-        } || {
-            echo -e "${RED}Failed to sync ${rsync_conf}${NC}" && exit 1
-        }
-    done
+    echo -e "${YELLOW}No sync command found${NC}"
 fi
 
 # Execute after sync commands

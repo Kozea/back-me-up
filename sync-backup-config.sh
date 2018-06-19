@@ -17,12 +17,12 @@ RCLONE_SYNC=(
     [0]="local_path remote:/path"
 )
 
-typeset -A RSYNC_SYNC
-RSYNC_SYNC=(
-    [0]="${RSYNC} -urltv --delete -e 'ssh -p port' local_path user@example.com:/remote_path"
-)
+function sync {
+    # sync actions
+    echo -e "${BLUE}Sync${NC}"
+}
 
 function after_sync {
     # some stuff to perform when sync is done
-    echo "${BLUE}After sync${NC}"
+    echo -e "${BLUE}After sync${NC}"
 }
