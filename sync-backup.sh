@@ -84,18 +84,18 @@ else
     done
 fi
 
-# Sync SCP
-if [[ ! -v SCP_SYNC[@] ]]
+# Sync RSYNC
+if [[ ! -v RSYNC_SYNC[@] ]]
 then
-    echo -e "${YELLOW}No scp config found${NC}"
+    echo -e "${YELLOW}No rsync config found${NC}"
 else
-    for scp_conf in "${SCP_SYNC[@]}"
+    for rsync_conf in "${RSYNC_SYNC[@]}"
     do
         {
-            echo -e "${BLUE}Sync ${scp_conf}${NC}"
-            ${scp_conf}
+            echo -e "${BLUE}Sync ${rsync_conf}${NC}"
+            ${rsync_conf}
         } || {
-            echo -e "${RED}Failed to sync ${scp_conf}${NC}" && exit 1
+            echo -e "${RED}Failed to sync ${rsync_conf}${NC}" && exit 1
         }
     done
 fi
