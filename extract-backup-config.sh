@@ -8,12 +8,12 @@
 #==============================================================================
 function before_extract {
     # some stuff to perform before extract starts
-    echo "${BLUE}Before extract${NC}"
+    echo -e "${BLUE}Before extract${NC}"
 }
 
 function after_extract {
     # some stuff to perform when extract is done
-    echo "${BLUE}After extract${NC}"
+    echo -e "${BLUE}After extract${NC}"
 }
 
 NAME1_PASSPHRASE="superpassphrase"
@@ -33,3 +33,8 @@ NAME1_POSTGRES_INSTRUCTIONS=(
     [0]="${pg_restore} ..."
     [1]="${pg_restore} ..."
 )
+
+function NAME1_restore {
+    # some stuff to restore database
+    echo -e "${BLUE}Restore${NC}"
+}

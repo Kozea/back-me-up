@@ -63,7 +63,7 @@ PASSPHRASE="${TARGET_NAME}_PASSPHRASE"
 BASE_LOCATION="${TARGET_NAME}_ARCHIVES_LOCATION"
 EXTRACT_PATH="${TARGET_NAME}_EXTRACT_PATH"
 TO_EXTRACT="${TARGET_NAME}_ARCHIVES_TO_EXTRACT"[@]
-TO_RESTORE="${TARGET_NAME}_POSTGRES_INSTRUCTIONS"[@]
+RESTORE="${TARGET_NAME}_restore"
 
 {
     export BORG_PASSPHRASE=${!PASSPHRASE}
@@ -98,15 +98,16 @@ do
     }
 done
 
-for restore in "${!TO_RESTORE}"
-do
+# Execute restore commands
+if [ -n "$(type $RESTORE)" ]
+then
+    echo -e "${BLUE}Executing restore commands${NC}"
     {
-        echo -e "${BLUE}Restoring : ${restore}${NC}"
-        $restore
+        $RESTORE
     } || {
-        echo -e "${YELLOW}Something went wrong while restoring ${restore}${NC}"
+        echo -e "${YELLOW}Failed to execute ${RESTORE}${NC}"
     }
-done
+fi
 
 # Execute after extract commands
 if [ -n "$(type after_extract)" ]
