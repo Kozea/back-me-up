@@ -117,6 +117,61 @@ done
 
 echo -e "${GREEN}Back-up for files succeed !${NC}"
 
+# Sqlite databases
+if [[ ! -v SQLITEDB[@] ]]
+then
+    echo -e "${YELLOW}No sqlitedb to back-up${NC}"
+else
+    echo -e "* ${BLUE}Start archiving sqlitedb${NC}"
+fi
+
+for file_name in "${!SQLITEDB[@]}"
+do
+    today_date=$(${DATE} +%Y-%m-%d)
+    archive_name=${file_name##*/}
+    archive_name="${today_date}-"${archive_name//\//-}
+
+    archive_path=${file_name%/*}
+    if [ ! -d "${archive_path}" ]
+    then
+        {
+            echo -e "* ${BLUE}Create ${archive_path}${NC}"
+            ${MKDIR} -p "${archive_path}"
+        } || {
+            echo -e "${RED}Unable to create ${archive_path}${NC}" && exit 1
+        }
+    fi
+
+
+    echo -e "${BLUE}.dump ${SQLITEDB[$file_name]}${NC}"
+    if [ ! "$(${DATE} +%Y-%m-%d -r ${file_name})" = "${today_date}" ]
+    then
+        {
+            ${SQLITE3} ${SQLITEDB[${file_name}]} .dump > "$file_name"
+        } || {
+            echo -e "${RED}Unable to execute the .dump command${NC}"
+            echo -e "${RED}Unable to create the back-up${NC}" && exit 1
+        }
+    else
+        echo -e "${YELLOW}Dump for today already exists${NC}"
+    fi
+    echo -e "${BLUE}Create back-up ${archive_name}${NC}"
+    {
+        ${BORG} create "${BORGREPO}"::"${archive_name}" "${file_name}"
+    } || {
+        if [ $? -eq 2 ]
+        then
+            echo -e "${YELLOW}Archive already exists${NC}"
+        else
+            echo -e "${RED}Unable to create the back-up${NC}" && exit 1
+        fi
+    }
+    sleep 1
+done
+
+echo -e "${GREEN}Back-up for sqlitedb succeed !${NC}"
+
+
 # Postgres databases
 if [[ ! -v POSTGRESDB[@] ]]
 then

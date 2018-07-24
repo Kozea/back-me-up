@@ -30,6 +30,12 @@ FILES=(
     [2]="/path/to/some/directory"
 )
 
+# Db listed here are dump in an sql file instead of just copy the db file
+typeset -A SQLITEDB
+SQLITEDB=(
+    [save_file.sql]="db.sqlite"
+)
+
 typeset -A POSTGRESDB
 POSTGRESDB=(
     [save_file.sql]="--schema-only -Fc database_name"
