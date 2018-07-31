@@ -28,11 +28,6 @@ NAME1_ARCHIVES_TO_EXTRACT=(
     [0]="archive-to-extract"
     [1]="other-archive-to-extract"
 )
-typeset -A NAME1_POSTGRES_INSTRUCTIONS
-NAME1_POSTGRES_INSTRUCTIONS=(
-    [0]="${pg_restore} ..."
-    [1]="${pg_restore} ..."
-)
 
 function NAME1_restore {
     # some stuff to restore database
