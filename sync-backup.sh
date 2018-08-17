@@ -78,7 +78,7 @@ else
                 echo -e "${BLUE}Sync ${sync_instruction}${NC}"
                 ${RCLONE} sync ${sync_instruction}
             } || {
-                echo -e "${RED}Failed to sync ${sync_instruction}${NC}" && exit 1
+                echo -e "${RED}Failed to sync ${sync_instruction}${NC}"
             }
         done
     done
