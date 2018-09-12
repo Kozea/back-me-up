@@ -143,11 +143,11 @@ do
     fi
 
 
-    echo -e "${BLUE}.dump ${SQLITEDB[$file_name]}${NC}"
+    echo -e "${BLUE}.backup ${SQLITEDB[$file_name]}${NC}"
     if [ ! "$(${DATE} +%Y-%m-%d -r ${file_name})" = "${today_date}" ]
     then
         {
-            ${SQLITE3} ${SQLITEDB[${file_name}]} .dump > "$file_name"
+            ${SQLITE3} ${SQLITEDB[${file_name}]} ".backup $file_name"
         } || {
             echo -e "${RED}Unable to execute the .dump command${NC}"
             echo -e "${RED}Unable to create the back-up${NC}" && exit 1

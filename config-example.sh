@@ -32,10 +32,10 @@ FILES=(
     [2]="/path/to/some/directory"
 )
 
-# Db listed here are dump in an sql file instead of just copy the db file
+# Db listed here are saved using .backup
 typeset -A SQLITEDB
 SQLITEDB=(
-    [save_file.sql]="db.sqlite"
+    [save_file.sqlite]="db.sqlite"
 )
 
 typeset -A POSTGRESDB
