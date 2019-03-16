@@ -9,9 +9,9 @@
 
 # Load shared variables and functions
 {
-    source "$(dirname "$0")/shared.sh" 
+    'source' "$(dirname "$0")/shared.sh" 
 } || {
-    echo "Unable to load shared.sh" && exit 1 
+    'echo' "Unable to load shared.sh" && exit 1 
 }
 
 # Parse command line
@@ -23,17 +23,17 @@ do
     case $key in
         -c)
             CONFIGFILE="$2"
-            shift
-            shift
+            'shift'
+            'shift'
             ;;
         -t)
             TARGET_PATH="$2"
-            shift
-            shift
+            'shift'
+            'shift'
             ;;
         *)
         POSITIONAL+=("$1")
-        shift
+        'shift'
         ;;
     esac
 done
@@ -42,18 +42,18 @@ set -- "${POSITIONAL[@]}"
 # Exit if there is a missing parameter in the command line
 if [ -z "$CONFIGFILE" ]
 then
-    echo "There is no configfile specified" && exit 1
+    'echo' "There is no configfile specified" && exit 1
 elif [ -z "$TARGET_PATH" ]
 then
-    echo "There is no target specified" && exit 1
+    'echo' "There is no target specified" && exit 1
 fi
 
 # Load configfile
 {
-    echo "* Load ${CONFIGFILE}"
-    source "${CONFIGFILE}"
+    'echo' "* Load ${CONFIGFILE}"
+    'source' "${CONFIGFILE}"
 } || {
-    echo "Something happens while loading ${CONFIGFILE}" && exit 1
+    'echo' "Something happens while loading ${CONFIGFILE}" && exit 1
 }
 
 TODAY_DATE=$('date' +%Y-%m-%d)
