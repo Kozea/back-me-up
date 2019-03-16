@@ -92,7 +92,7 @@ for extract in "${!TO_EXTRACT}"
 do
     {
         echo -e "${BLUE}Extracting : ${extract}${NC}"
-        ${BORG} extract ${!BASE_LOCATION}::${extract}
+        'borg' extract ${!BASE_LOCATION}::${extract}
     } || {
         echo -e "${YELLOW}Something went wrong when extracting ${extract}${NC}"
     }

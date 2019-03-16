@@ -56,9 +56,9 @@ fi
     echo "Something happens while loading ${CONFIGFILE}" && exit 1
 }
 
-TODAY_DATE=$(${DATE} +%Y-%m-%d)
+TODAY_DATE=$('date' +%Y-%m-%d)
 
-update=$(${STAT} -c %y "${TARGET_PATH}" | ${AWK} '{print $1;}')
+update=$('stat' -c %y "${TARGET_PATH}" | 'awk' '{print $1;}')
 
 if [ ! "$update" == "${TODAY_DATE}" ]
 then

@@ -60,13 +60,13 @@ if [ ! -d "$BORGREPO" ]
 then
     {
         echo -e "* ${BLUE}Create ${BORGREPO}${NC}"
-        ${MKDIR} -p "${BORGREPO}"
+        'mkdir' -p "${BORGREPO}"
         echo -e "* ${BLUE}Init ${BORGREPO}${NC}"
         if [ "${BORG_PASSPHRASE}" != "" ]
         then
-            ${BORG} init --critical --encryption=repokey "${BORGREPO}"
+            'borg' init --critical --encryption=repokey "${BORGREPO}"
         else
-            ${BORG} init --critical --encryption=none "${BORGREPO}"
+            'borg' init --critical --encryption=none "${BORGREPO}"
         fi
     } || {
         echo -e "${RED}Unable to create and init ${BORGREPO}${NC}" && exit 1
@@ -103,7 +103,7 @@ do
     archive_name=$(${DATE} +%Y-%m-%d)"-"${archive_name//\//-}
     echo -e "${BLUE}Create back-up ${archive_name}${NC}"
     {
-        ${BORG} create "${BORGREPO}"::"${archive_name}" "${file}"
+        'borg' create "${BORGREPO}"::"${archive_name}" "${file}"
     } || {
         if [ $? -eq 2 ]
         then
@@ -136,7 +136,7 @@ do
     then
         {
             echo -e "* ${BLUE}Create ${archive_path}${NC}"
-            ${MKDIR} -p "${archive_path}"
+            'mkdir' -p "${archive_path}"
         } || {
             echo -e "${RED}Unable to create ${archive_path}${NC}" && exit 1
         }
@@ -144,10 +144,10 @@ do
 
 
     echo -e "${BLUE}.backup ${SQLITEDB[$file_name]}${NC}"
-    if [ ! "$(${DATE} +%Y-%m-%d -r ${file_name})" = "${today_date}" ]
+    if [ ! "$('date' +%Y-%m-%d -r ${file_name})" = "${today_date}" ]
     then
         {
-            ${SQLITE3} ${SQLITEDB[${file_name}]} ".backup $file_name"
+            'sqlite3' ${SQLITEDB[${file_name}]} ".backup $file_name"
         } || {
             echo -e "${RED}Unable to execute the .dump command${NC}"
             echo -e "${RED}Unable to create the back-up${NC}" && exit 1
@@ -157,7 +157,7 @@ do
     fi
     echo -e "${BLUE}Create back-up ${archive_name}${NC}"
     {
-        ${BORG} create "${BORGREPO}"::"${archive_name}" "${file_name}"
+        'borg' create "${BORGREPO}"::"${archive_name}" "${file_name}"
     } || {
         if [ $? -eq 2 ]
         then
@@ -191,7 +191,7 @@ do
     then
         {
             echo -e "* ${BLUE}Create ${archive_path}${NC}"
-            ${MKDIR} -p "${archive_path}"
+            'mkdir' -p "${archive_path}"
         } || {
             echo -e "${RED}Unable to create ${archive_path}${NC}" && exit 1
         }
@@ -199,10 +199,10 @@ do
 
 
     echo -e "${BLUE}pg_dump ${POSTGRESDB[$file_name]}${NC}"
-    if [ ! "$(${DATE} +%Y-%m-%d -r ${file_name})" = "${today_date}" ]
+    if [ ! "$('date' +%Y-%m-%d -r ${file_name})" = "${today_date}" ]
     then
         {
-            ${PG_DUMP} ${POSTGRESDB[${file_name}]} > "$file_name"
+            'pg_dump' ${POSTGRESDB[${file_name}]} > "$file_name"
         } || {
             echo -e "${RED}Unable to execute the pg_dump command${NC}"
             echo -e "${RED}Unable to create the back-up${NC}" && exit 1
@@ -212,7 +212,7 @@ do
     fi
     echo -e "${BLUE}Create back-up ${archive_name}${NC}"
     {
-        ${BORG} create "${BORGREPO}"::"${archive_name}" "${file_name}"
+        'borg' create "${BORGREPO}"::"${archive_name}" "${file_name}"
     } || {
         if [ $? -eq 2 ]
         then
@@ -228,7 +228,7 @@ echo -e "${GREEN}Back-up for postgresdb succeed !${NC}"
 
 echo -e "* ${BLUE}Cleaning back-ups${NC}"
 {
-    ${BORG} prune ${PRUNE_OPT} "${BORGREPO}"
+    'borg' prune ${PRUNE_OPT} "${BORGREPO}"
 } || {
     echo -e "${RED}Unable to clean the back-ups${NC}" && exit 1
 }

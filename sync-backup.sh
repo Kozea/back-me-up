@@ -59,15 +59,15 @@ else
     for rclone_conf in "${RCLONE_REPOS[@]}"
     do
         remote_name=$(echo "$rclone_conf" | ${AWK} '{print $1}')
-        if [ "$(${RCLONE} listremotes | grep -c "$remote_name")" -lt 1 ]
+        if [ "$('rclone' listremotes | grep -c "$remote_name")" -lt 1 ]
         then
             echo -e "${YELLOW}The remote ${remote_name} doesn't exist${NC}"
             echo -e "* ${BLUE}Initializing the remote${NC}"
             {
                 password=$(echo "$rclone_conf" | ${AWK} '{print $NF}')
-                password_obscure=$(${RCLONE} obscure "${password}")
-                rclone_conf=$(${SED} "s/${password}/${password_obscure}/" <<< "${rclone_conf}")
-                ${RCLONE} config create ${rclone_conf}
+                password_obscure=$('rclone' obscure "${password}")
+                rclone_conf=$('sed' "s/${password}/${password_obscure}/" <<< "${rclone_conf}")
+                'rclone' config create ${rclone_conf}
             } || {
                 echo -e "${RED}Failed to create the remote ${remote_name}${NC}" && exit 1
             }
@@ -76,7 +76,7 @@ else
         do
             {
                 echo -e "${BLUE}Sync ${sync_instruction}${NC}"
-                ${RCLONE} sync ${sync_instruction}
+                'rclone' sync ${sync_instruction}
             } || {
                 echo -e "${RED}Failed to sync ${sync_instruction}${NC}"
             }
