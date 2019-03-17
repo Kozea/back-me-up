@@ -30,6 +30,9 @@ do
             'shift'
             'shift'
             ;;
+        -h|--help)
+            help "make-backup"
+            ;;
         *)
         POSITIONAL+=("$1")
         'shift'

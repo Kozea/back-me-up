@@ -35,6 +35,9 @@ do
             'shift'
             'shift'
             ;;
+        -h|--help)
+            help "extract-backup"
+            ;;
         *)
         POSITIONAL+=("$1")
         'shift'
