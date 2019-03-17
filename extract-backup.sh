@@ -43,15 +43,6 @@ do
 done
 set -- "${POSITIONAL[@]}"
 
-# Exit if there is a missing parameter in the command line
-if [ -z "$CONFIGFILE" ]
-then
-    'echo' -e "${RED}There is no configfile specified${NC}" && exit 1
-elif [ -z "$TARGET_NAME" ]
-then
-    'echo' -e "${RED}There is no target specified${NC}" && exit 1
-fi
-
 # Load configfile
 {
     'echo' -e "* ${BLUE}Load ${CONFIGFILE}${NC}"

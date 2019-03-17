@@ -41,18 +41,8 @@ do
 done
 set -- "${POSITIONAL[@]}"
 
-# Exit if there is a missing parameter in the command line
-if [ -z "$CONFIGFILE" ]
-then
-    'echo' "There is no configfile specified" && exit 1
-elif [ -z "$TARGET_PATH" ]
-then
-    'echo' "There is no target specified" && exit 1
-fi
-
 # Load configfile
 {
-    'echo' "* Load ${CONFIGFILE}"
     'source' "${CONFIGFILE}"
 } || {
     'echo' "Something happens while loading ${CONFIGFILE}" && exit 1
