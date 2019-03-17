@@ -23,12 +23,12 @@ do
     key="$1"
 
     case $key in
-        -c)
+        -c|--configfile)
             CONFIGFILE="$2"
             'shift'
             'shift'
             ;;
-        -t)
+        -t|--target)
             TARGET_PATH="$2"
             'shift'
             'shift'

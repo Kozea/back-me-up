@@ -25,7 +25,7 @@ do
     key="$1"
 
     case $key in
-        -c)
+        -c|--configfile)
             CONFIGFILE="$2"
             'shift'
             'shift'
