@@ -7,6 +7,8 @@
 # NOTES : 
 #==============================================================================
 
+set -euo pipefail
+
 # Load shared variables and functions
 {
     'source' "$(dirname "$0")/shared.sh" 
