@@ -1,14 +1,6 @@
+include:
+  - remote: 'https://gitlab.com/Kozea/ci-master/raw/master/.variables-images.yml'
+  - remote: 'https://gitlab.com/Kozea/ci-master/raw/master/.ci-deploy-prod.yml'
+
 stages:
   - deploy_prod
-
-.image: &image_deploy_jobs
-  image: kozea/deploy-tools:latest
-
-deploy_prod:
-  <<: *image_deploy_jobs
-  stage: deploy_prod
-  script:
-    - make deploy-prod
-  dependencies: []
-  only:
-    - master
